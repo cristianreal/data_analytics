@@ -1,0 +1,6 @@
+artifact_location: mlflow-artifacts:/652221015425993911
+creation_time: 1726342488170
+experiment_id: '652221015425993911'
+last_update_time: 1726342488170
+lifecycle_stage: active
+name: market_basket_analysis
