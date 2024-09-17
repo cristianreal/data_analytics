@@ -1,0 +1,15 @@
+artifact_uri: file:///home/creal/Desktop/REPOS/data_analytics/mlflow/mlruns/962074851556398888/6efb75168637403097b535cd046ce073/artifacts
+end_time: 1726342683420
+entry_point_name: ''
+experiment_id: '962074851556398888'
+lifecycle_stage: active
+run_id: 6efb75168637403097b535cd046ce073
+run_name: legendary-lamb-94
+run_uuid: 6efb75168637403097b535cd046ce073
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1726342683393
+status: 4
+tags: []
+user_id: creal

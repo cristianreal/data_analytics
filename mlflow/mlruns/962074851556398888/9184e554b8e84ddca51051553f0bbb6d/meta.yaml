@@ -1,0 +1,15 @@
+artifact_uri: file:///home/creal/Desktop/REPOS/data_analytics/mlflow/mlruns/962074851556398888/9184e554b8e84ddca51051553f0bbb6d/artifacts
+end_time: 1726342752429
+entry_point_name: ''
+experiment_id: '962074851556398888'
+lifecycle_stage: active
+run_id: 9184e554b8e84ddca51051553f0bbb6d
+run_name: treasured-bee-760
+run_uuid: 9184e554b8e84ddca51051553f0bbb6d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1726342752402
+status: 4
+tags: []
+user_id: creal

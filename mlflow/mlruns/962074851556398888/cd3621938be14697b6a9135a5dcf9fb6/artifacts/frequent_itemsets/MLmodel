@@ -1,0 +1,12 @@
+artifact_path: frequent_itemsets
+flavors:
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.5.1
+mlflow_version: 2.16.0
+model_size_bytes: 825
+model_uuid: 0c211681e7b6470b947136557266f00e
+run_id: cd3621938be14697b6a9135a5dcf9fb6
+utc_time_created: '2024-09-14 19:34:51.762469'

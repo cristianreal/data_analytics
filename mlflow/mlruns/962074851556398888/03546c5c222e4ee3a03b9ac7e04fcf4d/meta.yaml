@@ -1,0 +1,15 @@
+artifact_uri: file:///home/creal/Desktop/REPOS/data_analytics/mlflow/mlruns/962074851556398888/03546c5c222e4ee3a03b9ac7e04fcf4d/artifacts
+end_time: 1726342559841
+entry_point_name: ''
+experiment_id: '962074851556398888'
+lifecycle_stage: active
+run_id: 03546c5c222e4ee3a03b9ac7e04fcf4d
+run_name: enchanting-croc-487
+run_uuid: 03546c5c222e4ee3a03b9ac7e04fcf4d
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1726342559806
+status: 4
+tags: []
+user_id: creal

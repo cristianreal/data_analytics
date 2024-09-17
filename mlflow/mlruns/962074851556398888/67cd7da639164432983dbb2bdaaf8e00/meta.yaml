@@ -1,0 +1,15 @@
+artifact_uri: file:///home/creal/Desktop/REPOS/data_analytics/mlflow/mlruns/962074851556398888/67cd7da639164432983dbb2bdaaf8e00/artifacts
+end_time: 1726342445287
+entry_point_name: ''
+experiment_id: '962074851556398888'
+lifecycle_stage: active
+run_id: 67cd7da639164432983dbb2bdaaf8e00
+run_name: unequaled-perch-767
+run_uuid: 67cd7da639164432983dbb2bdaaf8e00
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1726342443612
+status: 3
+tags: []
+user_id: creal
