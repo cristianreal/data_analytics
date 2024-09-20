@@ -1,0 +1,44 @@
+2023-07-12 08:31:59 +0000 - dagster - DEBUG - example_job - 6b42a0e2-e569-41c8-9e99-86f1b6a6e1ab - 85387 - LOGS_CAPTURED - Started capturing logs in process (pid: 85387).
+2023-07-12 08:31:59 +0000 - dagster - DEBUG - example_job - 6b42a0e2-e569-41c8-9e99-86f1b6a6e1ab - 85387 - example_s3_op - STEP_START - Started execution of step "example_s3_op".
+2023-07-12 08:31:59 +0000 - dagster - ERROR - example_job - 6b42a0e2-e569-41c8-9e99-86f1b6a6e1ab - 85387 - example_s3_op - STEP_FAILURE - Execution of step "example_s3_op" failed.
+
+dagster._core.errors.DagsterExecutionStepExecutionError: Error occurred while executing op "example_s3_op"::
+
+botocore.exceptions.NoCredentialsError: Unable to locate credentials
+
+Stack Trace:
+  File "/usr/local/lib/python3.7/site-packages/dagster/_core/execution/plan/utils.py", line 54, in op_execution_error_boundary
+    yield
+  File "/usr/local/lib/python3.7/site-packages/dagster/_utils/__init__.py", line 445, in iterate_with_context
+    next_output = next(iterator)
+  File "/usr/local/lib/python3.7/site-packages/dagster/_core/execution/plan/compute_generator.py", line 125, in _coerce_op_compute_fn_to_iterator
+    fn, context, kwargs, context_arg_provided, config_arg_class, resource_arg_mapping
+  File "/usr/local/lib/python3.7/site-packages/dagster/_core/execution/plan/compute_generator.py", line 118, in invoke_compute_fn
+    return fn(context, **args_to_pass) if context_arg_provided else fn(**args_to_pass)
+  File "/opt/dagster/app/s3.py", line 8, in example_s3_op
+    Prefix='/'
+  File "/usr/local/lib/python3.7/site-packages/botocore/client.py", line 534, in _api_call
+    return self._make_api_call(operation_name, kwargs)
+  File "/usr/local/lib/python3.7/site-packages/botocore/client.py", line 960, in _make_api_call
+    operation_model, request_dict, request_context
+  File "/usr/local/lib/python3.7/site-packages/botocore/client.py", line 982, in _make_request
+    return self._endpoint.make_request(operation_model, request_dict)
+  File "/usr/local/lib/python3.7/site-packages/botocore/endpoint.py", line 119, in make_request
+    return self._send_request(request_dict, operation_model)
+  File "/usr/local/lib/python3.7/site-packages/botocore/endpoint.py", line 198, in _send_request
+    request = self.create_request(request_dict, operation_model)
+  File "/usr/local/lib/python3.7/site-packages/botocore/endpoint.py", line 137, in create_request
+    operation_name=operation_model.name,
+  File "/usr/local/lib/python3.7/site-packages/botocore/hooks.py", line 412, in emit
+    return self._emitter.emit(aliased_event_name, **kwargs)
+  File "/usr/local/lib/python3.7/site-packages/botocore/hooks.py", line 256, in emit
+    return self._emit(event_name, kwargs)
+  File "/usr/local/lib/python3.7/site-packages/botocore/hooks.py", line 239, in _emit
+    response = handler(**kwargs)
+  File "/usr/local/lib/python3.7/site-packages/botocore/signers.py", line 105, in handler
+    return self.sign(operation_name, request)
+  File "/usr/local/lib/python3.7/site-packages/botocore/signers.py", line 189, in sign
+    auth.add_auth(request)
+  File "/usr/local/lib/python3.7/site-packages/botocore/auth.py", line 418, in add_auth
+    raise NoCredentialsError()
+

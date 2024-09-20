@@ -1,0 +1,12 @@
+2023-07-12 07:25:02 +0000 - dagster - DEBUG - my_job - 3816fb8d-f363-4f3c-a527-7bd4ba4bc0ab - 1875 - LOGS_CAPTURED - Started capturing logs in process (pid: 1875).
+2023-07-12 07:25:02 +0000 - dagster - DEBUG - my_job - 3816fb8d-f363-4f3c-a527-7bd4ba4bc0ab - 1875 - a - STEP_START - Started execution of step "a".
+2023-07-12 07:25:02 +0000 - dagster - INFO - my_job - 3816fb8d-f363-4f3c-a527-7bd4ba4bc0ab - a - Running command:
+echo "hello world"
+2023-07-12 07:25:02 +0000 - dagster - INFO - my_job - 3816fb8d-f363-4f3c-a527-7bd4ba4bc0ab - a - Command pid: 1909
+2023-07-12 07:25:02 +0000 - dagster - INFO - my_job - 3816fb8d-f363-4f3c-a527-7bd4ba4bc0ab - a - hello world
+
+2023-07-12 07:25:02 +0000 - dagster - INFO - my_job - 3816fb8d-f363-4f3c-a527-7bd4ba4bc0ab - a - Command exited with return code 0
+2023-07-12 07:25:02 +0000 - dagster - DEBUG - my_job - 3816fb8d-f363-4f3c-a527-7bd4ba4bc0ab - 1875 - a - STEP_OUTPUT - Yielded output "result" of type "String". (Type check passed).
+2023-07-12 07:25:02 +0000 - dagster - DEBUG - my_job - 3816fb8d-f363-4f3c-a527-7bd4ba4bc0ab - a - Writing file at: /opt/dagster/dagster_home/storage/3816fb8d-f363-4f3c-a527-7bd4ba4bc0ab/a/result
+2023-07-12 07:25:02 +0000 - dagster - DEBUG - my_job - 3816fb8d-f363-4f3c-a527-7bd4ba4bc0ab - 1875 - a - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+2023-07-12 07:25:02 +0000 - dagster - DEBUG - my_job - 3816fb8d-f363-4f3c-a527-7bd4ba4bc0ab - 1875 - a - STEP_SUCCESS - Finished execution of step "a" in 370ms.

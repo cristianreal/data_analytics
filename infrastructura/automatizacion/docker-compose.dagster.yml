@@ -1,0 +1,33 @@
+version: "3"
+services:
+    dagster:
+        hostname: dagster
+        container_name: dagster
+        build: ./
+        environment:
+          DAGSTER_PG_USERNAME: 'data_analytics'
+          DAGSTER_PG_PASSWORD: 'data_analytics'
+          DAGSTER_PG_HOST: 'mypostgres'
+          DAGSTER_PG_DB: 'dagster'
+          DB_NAME: 'db_transaccional'
+          DB_USER: 'data_analytics'
+          DB_PASSWORD: 'data_analytics'
+          DB_HOST: 'mypostgres'
+        volumes:
+        #- './dagster:/opt/dagster/dagster_home/'
+        - './pipelines:/opt/dagster/app/'
+        #- './binaries:/opt/binaries'
+        ports:
+            - "3000:3000"
+        networks:
+            - data_analytics_project
+        restart: always
+        deploy:
+          resources:
+            limits:
+              cpus: '1.5'
+              memory: 2200M
+        memswap_limit: 6G
+networks:
+  data_analytics_project:
+    external: true

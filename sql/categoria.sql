@@ -1,3 +1,4 @@
+drop table if exists categoria;
 -- Crear la tabla categoria
 CREATE TABLE categoria (
     id INTEGER PRIMARY KEY,

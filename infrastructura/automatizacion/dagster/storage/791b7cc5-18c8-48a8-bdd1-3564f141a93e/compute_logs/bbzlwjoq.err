@@ -1,0 +1,20 @@
+2023-07-12 08:52:03 +0000 - dagster - DEBUG - example_job - 791b7cc5-18c8-48a8-bdd1-3564f141a93e - 127322 - LOGS_CAPTURED - Started capturing logs in process (pid: 127322).
+2023-07-12 08:52:03 +0000 - dagster - DEBUG - example_job - 791b7cc5-18c8-48a8-bdd1-3564f141a93e - 127322 - example_s3_op - STEP_START - Started execution of step "example_s3_op".
+2023-07-12 08:52:03 +0000 - dagster - ERROR - example_job - 791b7cc5-18c8-48a8-bdd1-3564f141a93e - 127322 - example_s3_op - STEP_FAILURE - Execution of step "example_s3_op" failed.
+
+dagster._core.errors.DagsterExecutionStepExecutionError: Error occurred while executing op "example_s3_op"::
+
+NameError: name 'context' is not defined
+
+Stack Trace:
+  File "/usr/local/lib/python3.7/site-packages/dagster/_core/execution/plan/utils.py", line 54, in op_execution_error_boundary
+    yield
+  File "/usr/local/lib/python3.7/site-packages/dagster/_utils/__init__.py", line 445, in iterate_with_context
+    next_output = next(iterator)
+  File "/usr/local/lib/python3.7/site-packages/dagster/_core/execution/plan/compute_generator.py", line 125, in _coerce_op_compute_fn_to_iterator
+    fn, context, kwargs, context_arg_provided, config_arg_class, resource_arg_mapping
+  File "/usr/local/lib/python3.7/site-packages/dagster/_core/execution/plan/compute_generator.py", line 118, in invoke_compute_fn
+    return fn(context, **args_to_pass) if context_arg_provided else fn(**args_to_pass)
+  File "/opt/dagster/app/s3.py", line 33, in example_s3_op
+    context.log.info(f"Fetched {len(df)} items")
+

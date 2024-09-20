@@ -1,0 +1,24 @@
+2023-07-12 10:03:28 +0000 - dagster - DEBUG - example_job - cc93e641-9624-4a7d-95ad-2b2c13225f6b - 144022 - LOGS_CAPTURED - Started capturing logs in process (pid: 144022).
+2023-07-12 10:03:28 +0000 - dagster - DEBUG - example_job - cc93e641-9624-4a7d-95ad-2b2c13225f6b - 144022 - create_temp_folders - STEP_START - Started execution of step "create_temp_folders".
+Creating folders
+2023-07-12 10:03:28 +0000 - dagster - INFO - example_job - cc93e641-9624-4a7d-95ad-2b2c13225f6b - create_temp_folders - Using temporary directory: /tmp
+2023-07-12 10:03:28 +0000 - dagster - INFO - example_job - cc93e641-9624-4a7d-95ad-2b2c13225f6b - create_temp_folders - Temporary script location: /tmp/tmp9b3_ifsn
+2023-07-12 10:03:28 +0000 - dagster - INFO - example_job - cc93e641-9624-4a7d-95ad-2b2c13225f6b - create_temp_folders - Running command:
+mkdir -p /tmp/data/raw && mkdir -p /tmp/data/processed && mkdir -p /tmp/scripts/etl
+2023-07-12 10:03:28 +0000 - dagster - INFO - example_job - cc93e641-9624-4a7d-95ad-2b2c13225f6b - create_temp_folders - Command pid: 144097
+2023-07-12 10:03:28 +0000 - dagster - INFO - example_job - cc93e641-9624-4a7d-95ad-2b2c13225f6b - create_temp_folders - Command exited with return code 0
+2023-07-12 10:03:28 +0000 - dagster - INFO - example_job - cc93e641-9624-4a7d-95ad-2b2c13225f6b - create_temp_folders - Using temporary directory: /tmp
+2023-07-12 10:03:28 +0000 - dagster - INFO - example_job - cc93e641-9624-4a7d-95ad-2b2c13225f6b - create_temp_folders - Temporary script location: /tmp/tmpmceyr53j
+2023-07-12 10:03:28 +0000 - dagster - INFO - example_job - cc93e641-9624-4a7d-95ad-2b2c13225f6b - create_temp_folders - Running command:
+ls -al /tmp/data
+2023-07-12 10:03:28 +0000 - dagster - INFO - example_job - cc93e641-9624-4a7d-95ad-2b2c13225f6b - create_temp_folders - Command pid: 144114
+2023-07-12 10:03:28 +0000 - dagster - INFO - example_job - cc93e641-9624-4a7d-95ad-2b2c13225f6b - create_temp_folders - total 16
+2023-07-12 10:03:28 +0000 - dagster - INFO - example_job - cc93e641-9624-4a7d-95ad-2b2c13225f6b - create_temp_folders - drwxr-xr-x 4 root root 4096 Jul 12 10:03 .
+2023-07-12 10:03:28 +0000 - dagster - INFO - example_job - cc93e641-9624-4a7d-95ad-2b2c13225f6b - create_temp_folders - drwxrwxrwt 1 root root 4096 Jul 12 10:03 ..
+2023-07-12 10:03:28 +0000 - dagster - INFO - example_job - cc93e641-9624-4a7d-95ad-2b2c13225f6b - create_temp_folders - drwxr-xr-x 2 root root 4096 Jul 12 10:03 processed
+2023-07-12 10:03:28 +0000 - dagster - INFO - example_job - cc93e641-9624-4a7d-95ad-2b2c13225f6b - create_temp_folders - drwxr-xr-x 2 root root 4096 Jul 12 10:03 raw
+2023-07-12 10:03:28 +0000 - dagster - INFO - example_job - cc93e641-9624-4a7d-95ad-2b2c13225f6b - create_temp_folders - Command exited with return code 0
+2023-07-12 10:03:28 +0000 - dagster - DEBUG - example_job - cc93e641-9624-4a7d-95ad-2b2c13225f6b - 144022 - create_temp_folders - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+2023-07-12 10:03:28 +0000 - dagster - DEBUG - example_job - cc93e641-9624-4a7d-95ad-2b2c13225f6b - create_temp_folders - Writing file at: /opt/dagster/dagster_home/storage/cc93e641-9624-4a7d-95ad-2b2c13225f6b/create_temp_folders/result
+2023-07-12 10:03:28 +0000 - dagster - DEBUG - example_job - cc93e641-9624-4a7d-95ad-2b2c13225f6b - 144022 - create_temp_folders - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+2023-07-12 10:03:28 +0000 - dagster - DEBUG - example_job - cc93e641-9624-4a7d-95ad-2b2c13225f6b - 144022 - create_temp_folders - STEP_SUCCESS - Finished execution of step "create_temp_folders" in 382ms.

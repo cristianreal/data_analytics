@@ -1,0 +1,6 @@
+2023-07-12 08:39:10 +0000 - dagster - DEBUG - example_job - 5a09b926-b4b9-43df-add1-66f3b4704469 - 99230 - LOGS_CAPTURED - Started capturing logs in process (pid: 99230).
+2023-07-12 08:39:10 +0000 - dagster - DEBUG - example_job - 5a09b926-b4b9-43df-add1-66f3b4704469 - 99230 - example_s3_op - STEP_START - Started execution of step "example_s3_op".
+2023-07-12 08:39:10 +0000 - dagster - DEBUG - example_job - 5a09b926-b4b9-43df-add1-66f3b4704469 - 99230 - example_s3_op - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+2023-07-12 08:39:10 +0000 - dagster - DEBUG - example_job - 5a09b926-b4b9-43df-add1-66f3b4704469 - example_s3_op - Writing file at: /opt/dagster/dagster_home/storage/5a09b926-b4b9-43df-add1-66f3b4704469/example_s3_op/result
+2023-07-12 08:39:10 +0000 - dagster - DEBUG - example_job - 5a09b926-b4b9-43df-add1-66f3b4704469 - 99230 - example_s3_op - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+2023-07-12 08:39:10 +0000 - dagster - DEBUG - example_job - 5a09b926-b4b9-43df-add1-66f3b4704469 - 99230 - example_s3_op - STEP_SUCCESS - Finished execution of step "example_s3_op" in 140ms.

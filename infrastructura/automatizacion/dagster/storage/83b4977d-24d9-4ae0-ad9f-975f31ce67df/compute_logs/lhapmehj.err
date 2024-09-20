@@ -1,0 +1,7 @@
+2023-07-12 09:59:26 +0000 - dagster - DEBUG - example_job - 83b4977d-24d9-4ae0-ad9f-975f31ce67df - 134749 - LOGS_CAPTURED - Started capturing logs in process (pid: 134749).
+2023-07-12 09:59:26 +0000 - dagster - DEBUG - example_job - 83b4977d-24d9-4ae0-ad9f-975f31ce67df - 134749 - create_temp_folders - STEP_START - Started execution of step "create_temp_folders".
+Creating folders
+2023-07-12 09:59:26 +0000 - dagster - DEBUG - example_job - 83b4977d-24d9-4ae0-ad9f-975f31ce67df - 134749 - create_temp_folders - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
+2023-07-12 09:59:26 +0000 - dagster - DEBUG - example_job - 83b4977d-24d9-4ae0-ad9f-975f31ce67df - create_temp_folders - Writing file at: /opt/dagster/dagster_home/storage/83b4977d-24d9-4ae0-ad9f-975f31ce67df/create_temp_folders/result
+2023-07-12 09:59:26 +0000 - dagster - DEBUG - example_job - 83b4977d-24d9-4ae0-ad9f-975f31ce67df - 134749 - create_temp_folders - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
+2023-07-12 09:59:26 +0000 - dagster - DEBUG - example_job - 83b4977d-24d9-4ae0-ad9f-975f31ce67df - 134749 - create_temp_folders - STEP_SUCCESS - Finished execution of step "create_temp_folders" in 71ms.

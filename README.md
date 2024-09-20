@@ -5,7 +5,7 @@
 docker network create data_analytics_project
 cd infrastructure/datastores
 docker-compose -f docker-compose.minio.yml up -d 
-docker-compose -f docker-compose.postgresql.yml
+docker-compose -f docker-compose.postgresql.yml up -d
 
 ```
 
@@ -14,14 +14,24 @@ docker-compose -f docker-compose.postgresql.yml
 ```bash
 .
 └── datalake/
-    ├── raw data
-    ├── processed data
-    └── failed data
-
+    ├── datos crudos
+    ├── datos procesados
+        ├── año
+            ├── mes
+                ├── data.parquet
+    └── datos con errores
+        data.parquet
 ```
 
+# Instalar Dagster
+```bash
+cd infrastructura/automatizacion
+docker-compose -f docker-compose.dagster.yml  up --build -d
+docker logs -f dagster
+```
 # Webservers
 - Minio: https://localhost:9001
+- Dagster: https://localhost:3000
 
 # Superset
 ```bash

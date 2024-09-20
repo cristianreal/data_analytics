@@ -1,3 +1,5 @@
+drop table if exists marca;
+
 -- Crear la tabla marca
 CREATE TABLE marca (
     id INTEGER PRIMARY KEY,
