@@ -37,3 +37,4 @@ override.tf.json
 terraform.rc
 csv/
 parquet/
+**/__pycache__/*

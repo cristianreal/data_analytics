@@ -1,11 +1,13 @@
 from dagster import graph,job, op, Definitions,OpExecutionContext
 import logging
-from utils import download_files,upload_files
+from utils import subir_archivo
 from db_utils import ejecutar_sql
 from dagster import asset, Config
 from dagster import job, materialize, op, RunConfig
 import json 
 import os
+import pandas as pd
+
 
 class ComandoSQL(Config):
     select_query: str
@@ -18,33 +20,37 @@ def obtener_registros_db(ComandoSQL):
   print(select_results)
   return select_results
 
-@op
+@asset
 def obtener_categorias(context: OpExecutionContext):
-  return obtener_registros_db(ComandoSQL(select_query="SELECT * FROM categoria", select_params=[]))
+  return obtener_registros_db(ComandoSQL(select_query="SELECT * FROM categoria", select_params=[])),"categorias"
 
 
-@op
+@asset
 def obtener_clientes(context: OpExecutionContext):
-  return obtener_registros_db(ComandoSQL(select_query="SELECT * FROM cliente", select_params=[]))
+  return obtener_registros_db(ComandoSQL(select_query="SELECT * FROM cliente", select_params=[])),"clientes"
 
-@op
-def obtener_eventos(context: OpExecutionContext,object_input):
-  return obtener_registros_db(ComandoSQL(select_query="SELECT * FROM events", select_params=[]))
-
-
-@op
-def obtener_marcas(context: OpExecutionContext,object_input):
-  return obtener_registros_db(ComandoSQL(select_query="SELECT * FROM marca", select_params=[]))
+@asset
+def obtener_eventos(context: OpExecutionContext):
+  return obtener_registros_db(ComandoSQL(select_query="SELECT * FROM events", select_params=[])),"eventos"
 
 
-@op
-def obtener_productos(context: OpExecutionContext,object_input):
-  return obtener_registros_db(ComandoSQL(select_query="SELECT * FROM producto", select_params=[]))
+@asset
+def obtener_marcas(context: OpExecutionContext):
+  return obtener_registros_db(ComandoSQL(select_query="SELECT * FROM marca", select_params=[])),"marcas"
+
+
+@asset
+def obtener_productos(context: OpExecutionContext):
+  return obtener_registros_db(ComandoSQL(select_query="SELECT * FROM producto", select_params=[])),"productos"
 
 @op
 def guardar_en_datalake(object_input):
-  print("guardar")
-  print(object_input)
+  resultados = object_input[0]
+  nombre_archivo = object_input[1]
+  df = pd.DataFrame(resultados)
+  os.makedirs(f"parquet/{nombre_archivo}", exist_ok=True)
+  df.to_parquet(f"parquet/{nombre_archivo}/{nombre_archivo}.parquet.gzip", compression='gzip')  
+  subir_archivo(f"parquet/{nombre_archivo}/",f"datos_crudos_prueba")
   return None
 
 
@@ -77,6 +83,6 @@ def extraccion_carga_producto():
 
 defs = Definitions(
     jobs=[extraccion_carga_categorias,extraccion_carga_clientes,extraccion_carga_eventos,extraccion_carga_marca,extraccion_carga_producto],
-    assets=[],
+    assets=[obtener_categorias,obtener_clientes, obtener_eventos, obtener_productos, obtener_marcas],
     resources={}
 )

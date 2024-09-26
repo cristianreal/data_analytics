@@ -27,7 +27,15 @@ docker-compose -f docker-compose.postgresql.yml up -d
 ```bash
 cd infrastructura/automatizacion
 docker-compose -f docker-compose.dagster.yml  up --build -d
+docker ps
 docker logs -f dagster
+```
+# Instalar MinIO
+```bash
+cd 'infrastructura/almacenes de datos'
+docker-compose -f docker-compose.minio.yml  up -d
+docker ps
+docker logs -f minio_container
 ```
 # Webservers
 - Minio: https://localhost:9001

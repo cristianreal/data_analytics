@@ -1,0 +1,17 @@
+services:
+  jupyter:
+    image: jupyter/r-notebook
+    volumes:
+      - ./scripts:/home/jovyan/work
+    ports:
+      - 8888:8888
+    container_name: jupyter_notebook
+    environment:
+      GRANT_SUDO: 'yes'
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 2200M
+    memswap_limit: 6G
+    command: "start-notebook.sh --IdentityProvider.token=''"

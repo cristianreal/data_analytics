@@ -5,33 +5,42 @@ import io
 from pathlib import Path
 import os
 
-def escribir_archivo(*op_args, **kwargs):
-  scw = boto3.Session(region_name="us-east-1")
-  source=op_args[0]
-  target=op_args[1]
-  print(f"Intentar escribir en {target}")
-  s3 = scw.resource('s3',endpoint_url="http://myminio:9000", aws_access_key_id="test", aws_secret_access_key="r2X+g+cvrpVlJ2Eqcb8bjelI2AIPbiF2YszEs72G" )
-  s3_object = s3.Object(
-      bucket_name='proyecto',
-      key=target
-  )
-  f = open(source, "r")
-  s3_object.put(Body=f.read())
+_aws_access_key_id="test123456"
+_aws_secret_access_key="test123456"
+_endpoint_url="http://myminio:9000"
+_bucket_name='datalake'
 
-def obtener_archivo(relative_path,s3_path, file_name):
+def subir_archivo(local_path, s3_path):
+    client = boto3.client('s3',endpoint_url=_endpoint_url, aws_access_key_id=_aws_access_key_id, aws_secret_access_key=_aws_secret_access_key )
+    scw = boto3.Session(region_name="us-east-1")
+    s3 = scw.resource('s3',endpoint_url=_endpoint_url, aws_access_key_id=_aws_access_key_id, aws_secret_access_key=_aws_secret_access_key )
+    print(local_path)
+    for root,dirs,files in os.walk(local_path):
+        print("==========================")
+        print(files)
+        logging.error(root)
+        for file in files:
+            logging.error(file)
+            client.upload_file(os.path.join(root,file),_bucket_name,f"{s3_path}/{file}")
+            
+def descargar_archivo(relative_path,s3_path, file_name):
+  content_str = obtener_datos(s3_path, file_name)
+  f = open(f"{relative_path}/{file_name}", "w")
+  f.write(content_str)
+  f.close()
+
+
+def obtener_datos(s3_path, file_name):
   scw = boto3.Session(region_name="us-east-1")
-  s3 = scw.resource('s3',endpoint_url="http://myminio:9000", aws_access_key_id="test", aws_secret_access_key="r2X+g+cvrpVlJ2Eqcb8bjelI2AIPbiF2YszEs72G" )
+  s3 = scw.resource('s3',endpoint_url=_endpoint_url, aws_access_key_id=_aws_access_key_id, aws_secret_access_key=_aws_secret_access_key )
   s3_object = s3.Object(
-      bucket_name='proyecto',
+      bucket_name=_bucket_name,
       key=f"{s3_path}/{file_name}"
   )
   s3_response = s3_object.get()
   s3_object_body = s3_response.get('Body')
   content_str = s3_object_body.read().decode('latin1')
-  f = open(f"{relative_path}/{file_name}", "a")
-  f.write(content_str)
-  f.close()
-
+  return content_str
 
 def get_file_folders(s3_client, bucket_name, prefix=""):
     file_names = []
@@ -64,10 +73,10 @@ def get_file_folders(s3_client, bucket_name, prefix=""):
 
 
 def download_files( s3_prefix, local_path):
-    client = boto3.client('s3',endpoint_url="http://myminio:9000", aws_access_key_id="test", aws_secret_access_key="r2X+g+cvrpVlJ2Eqcb8bjelI2AIPbiF2YszEs72G" )
+    client = boto3.client('s3',endpoint_url=_endpoint_url, aws_access_key_id=_aws_access_key_id, aws_secret_access_key=_aws_secret_access_key )
     scw = boto3.Session(region_name="us-east-1")
-    s3 = scw.resource('s3',endpoint_url="http://myminio:9000", aws_access_key_id="test", aws_secret_access_key="r2X+g+cvrpVlJ2Eqcb8bjelI2AIPbiF2YszEs72G" )
-    download_dir(client, s3, s3_prefix, local_path, bucket='proyecto')
+    s3 = scw.resource('s3',endpoint_url=_endpoint_url, aws_access_key_id=_aws_access_key_id, aws_secret_access_key=_aws_secret_access_key )
+    download_dir(client, s3, s3_prefix, local_path, bucket=_bucket_name)
 
 def download_dir(client, resource, dist, local='/tmp', bucket='your_bucket'):
     paginator = client.get_paginator('list_objects')
@@ -82,15 +91,3 @@ def download_dir(client, resource, dist, local='/tmp', bucket='your_bucket'):
             if not file.get('Key').endswith('/'):
                 resource.meta.client.download_file(bucket, file.get('Key'), dest_pathname)
 
-def upload_files(local_path, s3_path):
-    client = boto3.client('s3',endpoint_url="http://myminio:9000", aws_access_key_id="test", aws_secret_access_key="r2X+g+cvrpVlJ2Eqcb8bjelI2AIPbiF2YszEs72G" )
-    scw = boto3.Session(region_name="us-east-1")
-    s3 = scw.resource('s3',endpoint_url="http://myminio:9000", aws_access_key_id="test", aws_secret_access_key="r2X+g+cvrpVlJ2Eqcb8bjelI2AIPbiF2YszEs72G" )
-    print(local_path)
-    for root,dirs,files in os.walk(local_path):
-        print("==========================")
-        print(files)
-        logging.error(root)
-        for file in files:
-            logging.error(file)
-            client.upload_file(os.path.join(root,file),"proyecto",f"{s3_path}/{file}")
