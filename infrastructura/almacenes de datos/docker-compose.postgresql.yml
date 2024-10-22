@@ -32,7 +32,7 @@ services:
             PGADMIN_CONFIG_SERVER_MODE: 'True'
         volumes:
             - pgadmin:/var/lib/pgadmin4/storage
-            - ./data-local:/var/lib/pgadmin/storage/data_analytics_gmail.com:z
+            #- ./data-local:/var/lib/pgadmin/storage/data_analytics_gmail.com:z
         ports:
             - "5050:80"
         networks:

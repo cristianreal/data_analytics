@@ -27,7 +27,7 @@ services:
             limits:
               cpus: '1.5'
               memory: 2200M
-        memswap_limit: 6G
+        #memswap_limit: 6G
 networks:
   data_analytics_project:
     external: true

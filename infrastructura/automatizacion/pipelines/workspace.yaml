@@ -2,3 +2,4 @@ load_from:
   # References the file copied into your Dockerfile
   - python_file: Extaccion_Carga.py
   - python_file: Transformaciones.py
+  - python_file: Dwh.py
