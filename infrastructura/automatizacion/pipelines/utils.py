@@ -16,12 +16,15 @@ def subir_archivo(local_path, s3_path):
     s3 = scw.resource('s3',endpoint_url=_endpoint_url, aws_access_key_id=_aws_access_key_id, aws_secret_access_key=_aws_secret_access_key )
     print(local_path)
     for root,dirs,files in os.walk(local_path):
-        print("==========================")
-        print(files)
-        logging.error(root)
+        logging.debug(root)
         for file in files:
-            logging.error(file)
-            client.upload_file(os.path.join(root,file),_bucket_name,f"{s3_path}/{file}")
+            logging.debug(file)
+            local_file_path = os.path.join(root, file)
+            # Calculate the relative path
+            relative_path = os.path.relpath(local_file_path, local_path)
+            # Construct the S3 key (path in the bucket)
+            s3_key = os.path.join(s3_path, relative_path).replace("\\", "/")
+            client.upload_file(local_file_path,_bucket_name,s3_key)
             
 def descargar_archivo(relative_path,s3_path, file_name):
   content_str = obtener_datos(s3_path, file_name)
