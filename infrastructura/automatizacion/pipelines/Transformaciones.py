@@ -72,18 +72,11 @@ def guardar_en_datalake(df_categorias,df_marca,df_producto):
   spark_df = spark.createDataFrame(df_productos_transformado)
   spark_df = spark_df.withColumn("categoria_id", col("categoria_id").cast(IntegerType()))
   spark_df = spark_df.withColumn("marca_id", col("marca_id").cast(IntegerType()))
-  spark_df.write \
-    .partitionBy("categoria_id", "marca_id") \
-    .format("parquet") \
-    .mode("overwrite") \
-    .save("parquet_transformado/productos")
+  spark_df.write.option("header", True).partitionBy("categoria_id", "marca_id") \
+        .mode("overwrite") \
+        .csv("parquet_transformado/productos") 
   spark.stop()
-  # resultados = object_input[0]
-  # nombre_archivo = object_input[1]
-  # df = pd.DataFrame(resultados)
-  # 
-  # df.to_parquet(f"parquet/{nombre_archivo}/{nombre_archivo}.parquet.gzip", compression='gzip')  
-  subir_archivo(f"parquet_transformado/productos",f"datos_procesados")
+  subir_archivo(f"parquet_transformado",f"datos_procesados")
   return None
 
 
