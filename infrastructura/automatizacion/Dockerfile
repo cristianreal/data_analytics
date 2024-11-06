@@ -4,7 +4,8 @@ RUN mkdir -p /opt/dagster/dagster_home /opt/dagster/app
 RUN apt-get update && apt-get install -y libxkbcommon-x11-0 libgbm-dev software-properties-common
 RUN apt-get update && apt-get install -y openjdk-17-jdk
 RUN pip install dagster dagster-webserver dagster-postgres dagster-aws dagster-shell pandas
-RUN pip install psycopg2-binary python-dotenv pyarrow fastparquet pyspark
+RUN pip install psycopg2-binary python-dotenv pyarrow fastparquet pyspark py-postgresql
+# RUN spark-shell --packages org.postgresql:postgresql:42.0.0 
 # Copy your code and workspace to /opt/dagster/app
 #COPY repo.py workspace.yaml /opt/dagster/app/
 

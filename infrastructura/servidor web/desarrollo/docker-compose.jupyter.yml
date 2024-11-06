@@ -1,17 +1,29 @@
 services:
   jupyter:
-    image: jupyter/r-notebook
+    image: jupyter/pyspark-notebook
     volumes:
       - ./scripts:/home/jovyan/work
+      - ./../../automatizacion/pipelines/parquet_temporal/:/home/jovyan/work/parquet_temporal
+      - ./../../automatizacion/pipelines/parquet_transformado/:/home/jovyan/work/parquet_transformado
     ports:
       - 8888:8888
+    networks:
+      - data_analytics_project
     container_name: jupyter_notebook
     environment:
       GRANT_SUDO: 'yes'
+      JUPYTER_ENABLE_LAB: 'yes'
+      NB_UID: ${UID}  # This should match your host user ID
+      NB_GID: ${GID}  # This should match your host group ID
     deploy:
       resources:
         limits:
           cpus: '1.5'
           memory: 2200M
     memswap_limit: 6G
+    user: root
+    restart: always
     command: "start-notebook.sh --IdentityProvider.token=''"
+networks:
+  data_analytics_project:
+    external: true

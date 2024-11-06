@@ -11,7 +11,7 @@ import io
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import year, month, day
 from pyspark.sql.functions import col
-from pyspark.sql.types import IntegerType
+from pyspark.sql.types import IntegerType,StringType,DateType
 
 class ArchivoS3(Config):
     nombre_archivo: str
@@ -79,6 +79,34 @@ def guardar_en_datalake(df_categorias,df_marca,df_producto):
   subir_archivo(f"parquet_transformado",f"datos_procesados")
   return None
 
+@op
+def guardar_en_datalake_eventos(df_eventos):
+  os.makedirs(f"parquet_transformado/eventos", exist_ok=True)
+  spark = SparkSession.builder.appName("EventsPartitioning").getOrCreate()
+  spark_df = spark.createDataFrame(df_eventos[0])
+  spark_df = spark_df.withColumn("event", col("event").cast(StringType()))
+  spark_df.write.option("header", True).partitionBy("event") \
+        .mode("overwrite") \
+        .csv("parquet_transformado/eventos") 
+  spark.stop()
+  subir_archivo(f"parquet_transformado",f"datos_procesados")
+  return None
+
+@op
+def guardar_en_datalake_clientes(df_clientes):
+  print("guardar en data lake")
+  os.makedirs(f"parquet_transformado/clientes", exist_ok=True)
+  spark = SparkSession.builder.appName("ClientPartitioning").getOrCreate()
+  spark_df = spark.createDataFrame(df_clientes[0])
+  spark_df = spark_df.withColumn("genero", col("genero").cast(StringType()))
+  spark_df.write.option("header", True).partitionBy("genero") \
+        .mode("overwrite") \
+        .csv("parquet_transformado/clientes") 
+  spark.stop()
+  subir_archivo(f"parquet_transformado",f"datos_procesados")
+  return None
+
+
 
 @job
 def transformacion_productos():
@@ -90,12 +118,12 @@ def transformacion_productos():
 @job
 def transformacion_clientes():
   t0 = procesar_clientes()
-  guardar_en_datalake(t0)
+  guardar_en_datalake_clientes(t0)
 
 @job
 def transformacion_eventos():
   t0 = procesar_eventos()
-  guardar_en_datalake(t0)
+  guardar_en_datalake_eventos(t0)
 
 
 defs = Definitions(

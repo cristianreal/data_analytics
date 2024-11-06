@@ -12,94 +12,123 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import year, month, day
 from pyspark.sql.functions import col
 from pyspark.sql.types import IntegerType
+#from utils import download_files,upload_files
+import sys
 
-class ArchivoS3(Config):
-    nombre_archivo: str
-    ruta_s3: str
-
-@asset
-def obtener_archivo_crudo(ArchivoS3):
-  print(f"{ArchivoS3.ruta_s3}/{ArchivoS3.nombre_archivo}")
-  ruta_relativa = "parquet_temporal/"
-  os.makedirs(ruta_relativa, exist_ok=True)
-  descargar_archivo(ruta_relativa, ArchivoS3.ruta_s3, ArchivoS3.nombre_archivo)
-  data = pd.read_csv(f"{ruta_relativa}/{ArchivoS3.nombre_archivo}", sep=",") 
-  print(data.head())
-  return data
-
-@asset
-def obtener_categorias(context: OpExecutionContext):
-  data = obtener_archivo_crudo(ArchivoS3(nombre_archivo="categoria.csv",ruta_s3="datos_crudos"))
-  # Ejecutar transformaciones
-  return data, "categorias"
-
-@asset
-def obtener_clientes(context: OpExecutionContext):
-  data = obtener_archivo_crudo(ArchivoS3(nombre_archivo="cliente.csv",ruta_s3="datos_crudos"))
-  # Ejecutar transformaciones
-  return data,"clientes"
-
-@asset
-def obtener_eventos(context: OpExecutionContext):
-  data = obtener_archivo_crudo(ArchivoS3(nombre_archivo="events.csv",ruta_s3="datos_crudos"))
-  # Ejecutar transformaciones
-  return data,"eventos"
-
-@asset
-def obtener_marcas(context: OpExecutionContext):
-  data = obtener_archivo_crudo(ArchivoS3(nombre_archivo="marca.csv",ruta_s3="datos_crudos"))
-  # Ejecutar transformaciones
-  return data,"marcas"
-
-
-@asset
-def obtener_productos(context: OpExecutionContext):
-  data = obtener_archivo_crudo(ArchivoS3(nombre_archivo="producto.csv",ruta_s3="datos_crudos"))
-  # Ejecutar transformaciones
-  return data,"productos"
+os.environ['PYSPARK_PYTHON'] = sys.executable
+os.environ['PYSPARK_DRIVER_PYTHON'] = sys.executable
 
 @op
-def guardar_en_datalake(df_categorias,df_marca,df_producto):
-  print("guardar en data lake")
-  tmp_df_marca=df_marca[0].rename(columns={"id": "marca_id"})
-  tmp_df_categorias=df_categorias[0].rename(columns={"id": "categoria_id"})
-  df_productos_transformado = pd.merge(df_producto[0],tmp_df_marca)
-  df_productos_transformado = pd.merge(df_productos_transformado,tmp_df_categorias)
-  df_productos_transformado=df_productos_transformado.rename(columns={"id": "itemid"})
-  print(df_productos_transformado.columns)
-  os.makedirs(f"parquet_transformado/productos", exist_ok=True)
-  spark = SparkSession.builder.appName("ProductPartitioning").getOrCreate()
-  spark_df = spark.createDataFrame(df_productos_transformado)
-  spark_df = spark_df.withColumn("categoria_id", col("categoria_id").cast(IntegerType()))
-  spark_df = spark_df.withColumn("marca_id", col("marca_id").cast(IntegerType()))
-  spark_df.write.option("header", True).partitionBy("categoria_id", "marca_id") \
-        .mode("overwrite") \
-        .csv("parquet_transformado/productos") 
-  spark.stop()
-  subir_archivo(f"parquet_transformado",f"datos_procesados")
-  return None
+def escribir_en_dwh_productos():
+  spark = SparkSession.builder.appName("ReadFilterProducts").config("spark.jars.packages", "org.postgresql:postgresql:42.6.0").getOrCreate()
+  path="parquet_transformado/productos"
+  categoria_id='*'
+  marca_id=1
+  final_path = path
+  if categoria_id is not None:
+      final_path = f"{path}/categoria_id={categoria_id}"
+  if marca_id is not None:
+       final_path = f"{final_path}/marca_id={marca_id}"
+  data = spark.read.option("header", True)\
+      .option("inferSchema", "true") \
+      .option("basePath", path) \
+      .csv(final_path)
+  
+  print(data.show())
+  postgres_properties = {
+      "user": os.getenv("DB_USER"),
+      "password": os.getenv("DB_PASSWORD"),"driver" : "org.postgresql.Driver"  }
 
+  postgres_url = f"jdbc:postgresql://{os.getenv("DB_HOST", "localhost")}:5432/dwh"
+  print(postgres_url)
+  try:
+    pass
+   
+    # Write dimension tables
+    data.write.format("jdbc") \
+      .option("mode", "overwrite") \
+      .option("url", postgres_url) \
+      .option("dbtable", "producto") \
+      .options(**postgres_properties).save()
+  except Exception as e:
+      print(f"Error writing to data warehouse: {str(e)}")
+      raise
+
+@op
+def escribir_en_dwh_evento():
+  spark = SparkSession.builder.appName("ReadFilterEventos").config("spark.jars.packages", "org.postgresql:postgresql:42.6.0").getOrCreate()
+  path="parquet_transformado/eventos"
+  evento_nombre='*'
+  if evento_nombre is not None:
+      final_path = f"{path}/event={evento_nombre}"
+  data = spark.read.option("header", True)\
+      .option("inferSchema", "true") \
+      .option("basePath", path) \
+      .csv(final_path)
+  
+  postgres_properties = {
+      "user": os.getenv("DB_USER"),
+      "password": os.getenv("DB_PASSWORD"),"driver" : "org.postgresql.Driver"  }
+
+  postgres_url = f"jdbc:postgresql://{os.getenv("DB_HOST", "localhost")}:5432/dwh"
+  print(postgres_url)
+  try:
+    pass
+    # Write dimension tables
+    data.write.format("jdbc") \
+      .option("mode", "overwrite") \
+      .option("url", postgres_url) \
+      .option("dbtable", "eventos") \
+      .options(**postgres_properties).save()
+  except Exception as e:
+      print(f"Error writing to data warehouse: {str(e)}")
+      raise
+
+
+@op
+def escribir_en_dwh_clientes():
+  spark = SparkSession.builder.appName("ReadFilterClients").config("spark.jars.packages", "org.postgresql:postgresql:42.6.0").getOrCreate()
+  path="parquet_transformado/clientes"
+  genero_nombre='*'
+  if genero_nombre is not None:
+      final_path = f"{path}/genero={genero_nombre}"
+  data = spark.read.option("header", True)\
+      .option("inferSchema", "true") \
+      .option("basePath", path) \
+      .csv(final_path)
+  
+  postgres_properties = {
+      "user": os.getenv("DB_USER"),
+      "password": os.getenv("DB_PASSWORD"),"driver" : "org.postgresql.Driver"  }
+
+  postgres_url = f"jdbc:postgresql://{os.getenv("DB_HOST", "localhost")}:5432/dwh"
+  print(postgres_url)
+  try:
+    pass
+    # Write dimension tables
+    data.write.format("jdbc") \
+      .option("mode", "overwrite") \
+      .option("url", postgres_url) \
+      .option("dbtable", "clientes") \
+      .options(**postgres_properties).save()
+  except Exception as e:
+      print(f"Error writing to data warehouse: {str(e)}")
+      raise
+    
+@job
+def carga_dwh_productos():
+  t0 = escribir_en_dwh_productos()
 
 @job
-def transformacion_productos():
-  df_categorias = procesar_categorias()
-  df_marca = procesar_marcas()
-  df_producto = procesar_productos()
-  guardar_en_datalake(df_categorias,df_marca,df_producto)
+def carga_dwh_eventos():
+  t0 = escribir_en_dwh_evento()
 
 @job
-def transformacion_clientes():
-  t0 = procesar_clientes()
-  guardar_en_datalake(t0)
-
-@job
-def transformacion_eventos():
-  t0 = procesar_eventos()
-  guardar_en_datalake(t0)
-
+def carga_dwh_clientes():
+  t0 = escribir_en_dwh_clientes()
 
 defs = Definitions(
-    jobs=[hidratacion_dwh],
-    assets=[obtener_categorias,obtener_clientes, obtener_eventos, obtener_productos, obtener_marcas],
+    jobs=[carga_dwh_productos,carga_dwh_eventos,carga_dwh_clientes],
+    assets=[],
     resources={}
 )

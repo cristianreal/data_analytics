@@ -38,3 +38,7 @@ terraform.rc
 csv/
 parquet/
 **/__pycache__/*
+**/.ipynb_checkpoints/*
+**/parquet_transformado/*
+**/parquet_temporal/*
+**/__pycache__/*

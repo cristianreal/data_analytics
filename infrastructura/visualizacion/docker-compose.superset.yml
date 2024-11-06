@@ -15,7 +15,7 @@ services:
         networks:
             - data_analytics_project
         restart: on-failure
-        env_file: .env
+        #env_file: .env
         volumes:
             - superset_home:/app/superset_home
 networks:

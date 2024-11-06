@@ -43,6 +43,10 @@ docker logs -f minio_container
 
 # Superset
 ```bash
+cd 'infrastructura/visualizacion'
+docker-compose -f docker-compose.superset.yml  up -d
+docker ps
+
 docker exec -it superset superset fab create-admin \
               --username admin \
               --firstname Superset \
@@ -52,4 +56,11 @@ docker exec -it superset superset fab create-admin \
 
 docker exec -it superset superset db upgrade
 docker exec -it superset superset init
+```
+
+# Desplegar jupyter
+```bash
+cd 'infrastructura/servidor web/desarrollo'
+docker-compose -f docker-compose.jupyter.yml  up -d
+#Abrir http://localhost:8888
 ```
