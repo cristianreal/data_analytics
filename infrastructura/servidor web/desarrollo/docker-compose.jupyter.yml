@@ -15,12 +15,12 @@ services:
       JUPYTER_ENABLE_LAB: 'yes'
       NB_UID: ${UID}  # This should match your host user ID
       NB_GID: ${GID}  # This should match your host group ID
-    deploy:
-      resources:
-        limits:
-          cpus: '1.5'
-          memory: 2200M
-    memswap_limit: 6G
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '1.5'
+    #       memory: 2200M
+    # memswap_limit: 6G
     user: root
     restart: always
     command: "start-notebook.sh --IdentityProvider.token=''"
