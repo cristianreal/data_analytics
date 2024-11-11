@@ -1,6 +1,0 @@
-artifact_location: file:///home/creal/Desktop/REPOS/data_analytics/mlflow/mlruns/962074851556398888
-creation_time: 1726342443213
-experiment_id: '962074851556398888'
-last_update_time: 1726342443213
-lifecycle_stage: active
-name: market_basket_analysis

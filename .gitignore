@@ -42,3 +42,5 @@ parquet/
 **/parquet_transformado/*
 **/parquet_temporal/*
 **/__pycache__/*
+**/mlartifacts/*
+**/mlruns/*

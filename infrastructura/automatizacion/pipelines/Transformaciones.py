@@ -31,6 +31,11 @@ def obtener_archivo_crudo(ArchivoS3):
 def procesar_categorias(context: OpExecutionContext):
   data = obtener_archivo_crudo(ArchivoS3(nombre_archivo="categoria.csv",ruta_s3="datos_crudos"))
   # Ejecutar transformaciones
+  nuevas_filas = pd.DataFrame({
+      'id': [0],
+      'categoria': ['generico']
+  })
+  data = pd.concat([data, nuevas_filas], ignore_index=True)
   return data, "categorias"
 
 @asset
@@ -49,6 +54,11 @@ def procesar_eventos(context: OpExecutionContext):
 def procesar_marcas(context: OpExecutionContext):
   data = obtener_archivo_crudo(ArchivoS3(nombre_archivo="marca.csv",ruta_s3="datos_crudos"))
   # Ejecutar transformaciones
+  nuevas_filas = pd.DataFrame({
+      'id': [0],
+      'marca': ['generico']
+  })
+  data = pd.concat([data, nuevas_filas], ignore_index=True)
   return data,"marcas"
 
 
@@ -56,6 +66,8 @@ def procesar_marcas(context: OpExecutionContext):
 def procesar_productos(context: OpExecutionContext):
   data = obtener_archivo_crudo(ArchivoS3(nombre_archivo="producto.csv",ruta_s3="datos_crudos"))
   # Ejecutar transformaciones
+  data["categoria_id"].fillna(0, inplace = True)
+  data["marca_id"].fillna(0, inplace = True)
   return data,"productos"
 
 @op

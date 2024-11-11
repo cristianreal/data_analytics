@@ -7,6 +7,7 @@ services:
       - ./../../automatizacion/pipelines/parquet_transformado/:/home/jovyan/work/parquet_transformado
     ports:
       - 8888:8888
+      - 5000:5000
     networks:
       - data_analytics_project
     container_name: jupyter_notebook
